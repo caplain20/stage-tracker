@@ -33,3 +33,53 @@ class CompanyRead(BaseModel):
     sector: str | None
     notes: str | None
     created_at: datetime
+
+# ------------------------------------------------------------------ M2 : offres et candidatures
+from app.models import ApplicationStatus  # noqa: E402 — les 7 statuts, source unique (RG-01)
+
+
+class OfferCreate(BaseModel):
+    """EXG-004 : saisie d'une offre par copier-coller du texte brut."""
+
+    company_id: int
+    title: str = Field(min_length=1, max_length=300)
+    raw_text: str = Field(min_length=1)  # RG-06 : conservé tel quel
+    url: str | None = Field(default=None, max_length=500)
+    location: str | None = Field(default=None, max_length=200)
+    contract_type: str | None = Field(default=None, max_length=50)  # stage / alternance / cdi
+
+
+class OfferRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    company_id: int
+    title: str
+    raw_text: str
+    url: str | None
+    location: str | None
+    contract_type: str | None
+    created_at: datetime
+
+
+class ApplicationUpdate(BaseModel):
+    """EXG-006 / EXG-008 : transition de statut et/ou prochaine action datée."""
+
+    status: ApplicationStatus | None = None
+    next_action: str | None = Field(default=None, max_length=300)
+    next_action_date: datetime | None = None
+    notes: str | None = None
+
+
+class ApplicationRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    offer_id: int
+    status: ApplicationStatus
+    next_action: str | None
+    next_action_date: datetime | None
+    applied_at: datetime | None
+    notes: str | None
+    created_at: datetime
+    updated_at: datetime
