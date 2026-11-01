@@ -118,3 +118,28 @@ class ContactRead(BaseModel):
     source: str | None
     notes: str | None
     created_at: datetime
+# ---------- Interactions (M4) ----------
+
+class InteractionCreate(BaseModel):
+    kind: str = Field(min_length=1, max_length=50)
+    summary: str = Field(min_length=1)
+    contact_id: int | None = None
+    occurred_at: datetime | None = None
+
+
+class InteractionUpdate(BaseModel):
+    kind: str | None = Field(default=None, min_length=1, max_length=50)
+    summary: str | None = Field(default=None, min_length=1)
+    contact_id: int | None = None
+    occurred_at: datetime | None = None
+
+
+class InteractionRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    application_id: int
+    contact_id: int | None
+    kind: str
+    summary: str
+    occurred_at: datetime
