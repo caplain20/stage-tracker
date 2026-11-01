@@ -83,3 +83,38 @@ class ApplicationRead(BaseModel):
     notes: str | None
     created_at: datetime
     updated_at: datetime
+# ---------- Contacts (M3) ----------
+
+class ContactCreate(BaseModel):
+    full_name: str = Field(min_length=1, max_length=200)
+    role: str | None = Field(default=None, max_length=200)
+    email: str | None = Field(default=None, max_length=300)
+    phone: str | None = Field(default=None, max_length=300)
+    linkedin_url: str | None = Field(default=None, max_length=300)
+    source: str | None = Field(default=None, max_length=300)
+    notes: str | None = None
+
+
+class ContactUpdate(BaseModel):
+    full_name: str | None = Field(default=None, min_length=1, max_length=200)
+    role: str | None = Field(default=None, max_length=200)
+    email: str | None = Field(default=None, max_length=300)
+    phone: str | None = Field(default=None, max_length=300)
+    linkedin_url: str | None = Field(default=None, max_length=300)
+    source: str | None = Field(default=None, max_length=300)
+    notes: str | None = None
+
+
+class ContactRead(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    id: int
+    company_id: int | None
+    full_name: str
+    role: str | None 
+    email: str | None
+    phone: str | None
+    linkedin_url: str | None
+    source: str | None
+    notes: str | None
+    created_at: datetime
